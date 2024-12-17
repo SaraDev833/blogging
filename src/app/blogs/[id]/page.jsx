@@ -4,20 +4,21 @@ import { assets, blog_data } from "../../../../assets/assets";
 import Header from "@/components/header/Header";
 import Image from "next/image";
 import Footer from "@/components/Footer/Footer";
+import axios from "axios";
 
 
 const page = ({ params }) => {
     const [data, setdata] = useState(null);
 
 
-    const fetchBlogData = () => {
-        for (let i = 0; i < blog_data.length; i++) {
-
-            if (Number(params.id) === blog_data[i].id) {
-                setdata(blog_data[i]);
-                break;
-            }
+    const fetchBlogData =async () => {
+       const response = await axios.get('/api/Blogs' ,{
+        params:{
+            id: params.id
         }
+       })
+      
+     setdata(response.data)
     }
 
 
@@ -34,7 +35,7 @@ const page = ({ params }) => {
                         <Header />
                         <div className='my-20 flex justify-center items-center flex-col pb-20'>
                             <h2 className="text-xl lg:text-3xl font-semibold  mb-6 px-3 text-center">{data.title}</h2>
-                            <Image src={data.author_img} width={60} height={60} alt="author" className='rounded ' />
+                            <Image src={data.authorImage} width={60} height={60} alt="author" className='rounded ' />
                             <p className='text-sm font-normal mb-100'>{data.author}</p>
                         </div>
 
