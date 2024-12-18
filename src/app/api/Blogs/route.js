@@ -2,7 +2,9 @@ import { ConnectToDB } from "@/lib/DB/db";
 import BlogModel from "@/lib/models/BlogModels";
 import { writeFile } from 'fs/promises';
 const { NextResponse } = require("next/server");
+const fs = require('fs');
 
+// code for db connection before staring crud operation//
 const LoadDB = async () => {
     try {
         await ConnectToDB();
@@ -14,21 +16,26 @@ const LoadDB = async () => {
 LoadDB();
 
 
+
+// code for getting things from db//
+
 export async function GET(request) {
- const blogId = request.nextUrl.searchParams.get("id");
- if(blogId){
-    const blog = await BlogModel.findById(blogId)
-    return NextResponse.json(blog)
- }
- else{
-    const blogs = await BlogModel.find({});
-    return NextResponse.json({blogs});
- }
+    const blogId = request.nextUrl.searchParams.get("id");
+    if (blogId) {
+        const blog = await BlogModel.findById(blogId)
+        return NextResponse.json(blog)
+    }
+    else {
+        const blogs = await BlogModel.find({});
+        return NextResponse.json({ blogs });
+    }
 
 
 
 }
 
+
+// code for posting thing in db//
 
 export async function POST(request) {
 
@@ -42,15 +49,6 @@ export async function POST(request) {
         const path = `./public/${timeStamps}_${image.name}`;
         await writeFile(path, buffer);
         const imgurl = `/${timeStamps}_${image.name}`;
-
-        //    const authorImage = formData.get('authorImage');
-        //    const authorBinaryImage = await authorImage.arrayBuffer();
-        //    const imageBuffer = Buffer.from(authorBinaryImage);
-        //    const  authorPath= `./public/author/${timeStamps}_${authorImage.name}`;
-        //    await writeFile(authorPath , imageBuffer)
-        //    const AuthorUrl = `/${timeStamps}_${authorImage.name}`
-        //    console.log(AuthorUrl);
-
 
         const BlogData = {
             title: `${formData.get('title')}`,
@@ -67,9 +65,23 @@ export async function POST(request) {
         return NextResponse.json({ msg: 'Blog added successfully', success: true })
 
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ msg: 'Error in adding', success: false })
     }
 
 
+
+}
+
+
+// code for deleting items from db//
+
+export async function DELETE(request) {
+    const DeleteBlogID = await request.nextUrl.searchParams.get('id');
+    const blog = await BlogModel.findById(DeleteBlogID);
+    fs.unlink(`./public/${blog.image}`, () => { });
+    await BlogModel.findByIdAndDelete(DeleteBlogID);
+
+    return NextResponse.json({ msg: 'blog deletes!' })
 
 }

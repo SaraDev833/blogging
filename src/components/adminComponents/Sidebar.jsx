@@ -6,7 +6,7 @@ import Link from 'next/link'
 const Sidebar = () => {
   
   return (
-    <div className='flex flex-col pl-8 py-7 border-r border-black w-auto sm:w-[300px] h-[100vh]'>
+    <div className='flex flex-col pl-8 py-7 border-r border-black w-auto sm:w-[300px] '>
       <Image src={assets.logo} width={140} alt='logo' />
       <div className='mt-16'>
         <Link href='/admin/addProduct' className='cursor-pointer flex items-center bg-white border border-black shadow-[-5px_5px_0px_#000000]  px-3 py-2 w-fit'>

@@ -24,29 +24,37 @@ const page = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('title', data.title);
-    formData.append('description', data.description);
-    formData.append('category', data.category);
-    formData.append('image', image);
-    formData.append('author', data.author);
-    formData.append('authorImage', data.authorImage);
-
-    const response = await axios.post('/api/Blogs', formData);
-    console.log(response)
-    if (response.data.success) {
-      toast.success(response.data.msg)
-      setImage(null);
-      setData({
-        title: '',
-        description: '',
-        category: 'Startup',
-        author: 'Sara Sheikh',
-        authorImage: '/author.png',
-
-      })
+    console.log(e.target)
+    if (!image) {
+      toast.error('Image is required.');
+      return;
     }
-    else {
+    try {
+      const formData = new FormData();
+      formData.append('titl', data.title);
+      formData.append('description', data.description);
+      formData.append('category', data.category);
+      formData.append('image', image);
+      formData.append('author', data.author);
+      formData.append('authorImage', data.authorImage);
+
+
+      const response = await axios.post('/api/Blogs', formData);
+      console.log(response)
+      if (response.data.success) {
+        toast.success(response.data.msg)
+        setImage(null);
+        setData({
+          title: '',
+          description: '',
+          category: 'Startup',
+          author: 'Sara Sheikh',
+          authorImage: '/author.png',
+
+        })
+      }
+    }
+    catch (error) {
       toast.error("Error");
     }
 
@@ -62,7 +70,7 @@ const page = () => {
         <p className="text-xl font-medium mb-4">Blog Title</p>
         <input required onChange={onChangeHandler} name="title" value={data.title} className="w-auto sm:w-[400px] px-4 py-3 outline-none border-2 border-black ring-0 placeholder:text-slate-400 mb-6" placeholder="blog title" />
         <p className="text-xl font-medium mb-4">Blog Description</p>
-        <textarea required onChange={onChangeHandler} name="description" value={data.value} className="w-auto sm:w-[400px] px-4 py-3 outline-none border-2 border-black ring-0 placeholder:text-slate-400 mb-6 " placeholder="description"  ></textarea>
+        <textarea required onChange={onChangeHandler} name="description" value={data.description} className="w-auto sm:w-[400px] px-4 py-3 outline-none border-2 border-black ring-0 placeholder:text-slate-400 mb-6 " placeholder="description"  ></textarea>
         <p className="text-xl font-medium mb-4">Select Category</p>
         <select onChange={onChangeHandler} name="category" value={data.category} className='w-auto sm:w-[400px] outline-none border-2 border-black px-4 py-3 mb-6'>
           <option value='Technology'>Technology</option>
