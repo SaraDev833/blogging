@@ -10,7 +10,6 @@ const page = () => {
 
   const fetchData = async () => {
     const response = await axios.get('/api/Blogs');
-    console.log('response:', response)
     setBlog(response.data.blogs)
 
   }

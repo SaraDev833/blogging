@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 const BlogTable = ({ title, author, date  , id , deleteBlog }) => {
     const BlogDate = new Date(date);

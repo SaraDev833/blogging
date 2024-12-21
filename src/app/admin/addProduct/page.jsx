@@ -31,7 +31,7 @@ const page = () => {
     }
     try {
       const formData = new FormData();
-      formData.append('titl', data.title);
+      formData.append('title', data.title);
       formData.append('description', data.description);
       formData.append('category', data.category);
       formData.append('image', image);
